@@ -1,0 +1,2 @@
+C:/Users/Javie/OneDrive/Escritorio/guli_apppp/aplicacion_guli/android/app/.cxx/Debug/2l3n5e13/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/Javie/OneDrive/Escritorio/guli_apppp/aplicacion_guli/android/app/.cxx/Debug/2l3n5e13/x86_64/CMakeFiles/rebuild_cache.dir
