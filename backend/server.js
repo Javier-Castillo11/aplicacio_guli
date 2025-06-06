@@ -35,7 +35,7 @@ const port = 3000;
 
 // Middleware
 app.use(cors({
-  origin: '*', // O especifica los dominios permitidos: ['http://tudominio.com', 'http://localhost:port']
+  origin: '*', //
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
@@ -52,7 +52,7 @@ app.post('/guardarRol', async (req, res) => {
   }
 
   try {
-    // Insertar el rol/perfil en la tabla "perfiles"
+ 
     const sql = `
       INSERT INTO perfiles (id_usuario, tipo_perfil)
       VALUES (?, ?)
@@ -143,7 +143,7 @@ app.post('/registro', async (req, res) => {
     `;
     const [result] = await db.promise().query(sql, [nombre_completo, correo_electronico, hashedPassword]);
 
-const userId = result.insertId; // <-- Aquí obtienes el ID del nuevo usuario
+const userId = result.insertId; 
 
 
     const token = jwt.sign(
@@ -206,12 +206,12 @@ app.post('/login', async (req, res) => {
         userId: usuario.id_usuario,
         email: usuario.correo_electronico
       },
-      'tu_secreto_jwt', // Cambia esto por una clave secreta segura
+      'tu_secreto_jwt', 
       { expiresIn: '1h' }
     );
 
     res.status(200).json({
-      token: token, // Asegúrate de enviar el token
+      token: token, 
       userId: usuario.id_usuario,
       nombre_completo: usuario.nombre_completo,
       correo_electronico: usuario.correo_electronico,
@@ -227,7 +227,7 @@ app.post('/login', async (req, res) => {
 
 app.post('/obtenerCorreo', async (req, res) => {
   const { id_usuario } = req.body;
-console.log('ID recibido en /obtenerCorreo:', id_usuario); // <-- Agrega esto
+console.log('ID recibido en /obtenerCorreo:', id_usuario); 
   try {
     const [rows] = await db.promise().execute('SELECT correo_electronico FROM usuarios WHERE id_usuario = ?', [id_usuario]);
 
@@ -245,7 +245,7 @@ console.log('ID recibido en /obtenerCorreo:', id_usuario); // <-- Agrega esto
 ///ruta para codigo de verificacion
 const nodemailer = require('nodemailer');
 
-// Almacén temporal de códigos (en producción usa Redis o una tabla en la base de datos)
+// Almacén 
 const verificationCodes = {};
 
 app.post('/enviar-codigo-verificacion', async (req, res) => {
@@ -258,7 +258,7 @@ app.post('/enviar-codigo-verificacion', async (req, res) => {
   // Generar código aleatorio de 4 dígitos
   const codigo = Math.floor(1000 + Math.random() * 9000).toString();
 
-  // Guardar en memoria con tiempo de expiración (en producción mejor con Redis o DB)
+  // Guardar en memoria con tiempo de expiración 
   verificationCodes[correo_electronico] = {
     code: codigo,
     expiresAt: Date.now() + 60000, // 1 minuto
@@ -461,7 +461,7 @@ app.get('/fcg/:id', async (req, res) => {
     
     for (let i = 0; i < samples.length; i += stride) {
       if (reducedSamples.length >= targetSamples) break;
-      reducedSamples.push(samples[i] / 32768.0); // Normalización aquí
+      reducedSamples.push(samples[i] / 32768.0); // Normalización 
     }
 
     res.json({
@@ -512,7 +512,7 @@ app.get('/ecg/:id', async (req, res) => {
     const fileName = señal.ruta_archivo.trim();
 
     // 2. Construir ruta absoluta (¡corrige esto!)
-    const uploadsDir = path.join(__dirname, 'uploads'); // __dirname es la carpeta del script
+    const uploadsDir = path.join(__dirname, 'uploads'); // 
     const filePath = path.join(uploadsDir, fileName);
 
     console.log('Buscando archivo en:', filePath); // Debug clave
@@ -555,7 +555,7 @@ app.get('/ecg/:id', async (req, res) => {
 
 ///ruta para guardar los comentarios de los profesionales 
 app.post('/guardar-diagnostico', async (req, res) => {
-  console.log('Datos recibidos:', req.body); // <-- Agrega esto al inicio
+  console.log('Datos recibidos:', req.body); 
   try {
     const { id_senal, id_profesional, diagnostico_resumen, comentario, es_urgente } = req.body;
 
@@ -607,7 +607,7 @@ app.get('/diagnosticos-por-paciente', async (req, res) => {
     if (!token) return res.status(401).json({ error: 'Token no proporcionado' });
 
     const payload = jwt.verify(token, 'tu_secreto_jwt');
-    const pacienteId = payload.userId || payload.id; // Compatible con ambos formatos
+    const pacienteId = payload.userId || payload.id; 
 
     console.log(`Consultando diagnósticos para paciente ID: ${pacienteId}`);
 
@@ -828,7 +828,7 @@ app.get('/obtener-perfil-completo', async (req, res) => {
       success: true,
       datos: {
         ...userData[0],
-        tipo_perfil: tipoPerfil // Envía el valor exacto de la BD
+        tipo_perfil: tipoPerfil 
       }
     });
 
