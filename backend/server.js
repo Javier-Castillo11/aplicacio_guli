@@ -495,7 +495,7 @@ app.get('/ecg/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    // 1. Obtener la ruta del archivo desde la BD
+
     const [rows] = await db.promise().query(
       `SELECT ruta_archivo, fecha_subida, u.nombre_completo
        FROM senales s
@@ -511,13 +511,13 @@ app.get('/ecg/:id', async (req, res) => {
     const señal = rows[0];
     const fileName = señal.ruta_archivo.trim();
 
-    // 2. Construir ruta absoluta (¡corrige esto!)
+    
     const uploadsDir = path.join(__dirname, 'uploads'); // 
     const filePath = path.join(uploadsDir, fileName);
 
     console.log('Buscando archivo en:', filePath); // Debug clave
 
-    // 3. Validar que el archivo exista
+
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({
         error: 'Archivo .dat no encontrado',
@@ -527,7 +527,7 @@ app.get('/ecg/:id', async (req, res) => {
       });
     }
 
-    // 4. Leer y procesar el archivo binario
+ 
     const fileData = fs.readFileSync(filePath);
     const signalData = [];
     
@@ -535,7 +535,7 @@ app.get('/ecg/:id', async (req, res) => {
       signalData.push(fileData.readInt16LE(i)); // Little-endian 16-bit
     }
 
-    // 5. Responder con los datos
+  
     res.json({
       signal_data: signalData,
       patient_name: señal.nombre_completo,
@@ -569,7 +569,7 @@ app.post('/guardar-diagnostico', async (req, res) => {
 
     const fecha_diagnostico = new Date();
 
-    // 1. Insertar diagnóstico
+    // Insertar diagnóstico
     const [result] = await db.promise().query(
       `INSERT INTO diagnosticos (
         id_senal, id_profesional, diagnostico_resumen, comentario, 
@@ -579,7 +579,7 @@ app.post('/guardar-diagnostico', async (req, res) => {
        fecha_diagnostico, es_urgente || 0]
     );
 
-    // 2. Actualizar estado de la señal
+    // Actualizar estado de la señal
     await db.promise().query(
       `UPDATE senales SET estado = 'diagnosticado' WHERE id_senal = ?`,
       [id_senal]
@@ -639,7 +639,7 @@ app.get('/diagnosticos-por-paciente', async (req, res) => {
 
     console.log(`Número de diagnósticos encontrados: ${resultados.length}`);
     
-    // Respuesta estructurada según la solución propuesta
+    // Respuesta estructurada 
     res.setHeader('Content-Type', 'application/json');
     res.status(200).json({
       success: true,
@@ -818,10 +818,10 @@ app.get('/obtener-perfil-completo', async (req, res) => {
       return res.status(404).json({ success: false, error: 'Usuario no encontrado' });
     }
 
-    // DEBUG: Verificar dato antes de enviar
+    // DEBUG
     console.log('Datos crudos de DB:', userData[0]);
 
-    // Mantener el valor original sin transformar
+    // 
     const tipoPerfil = userData[0].tipo_perfil || 'paciente';
 
     res.json({
@@ -861,7 +861,7 @@ app.post('/obtener-rol-usuario', async (req, res) => {
         tipo_perfil: rows[0].tipo_perfil
       });
     } else {
-      // Si no encuentra perfil, devolvemos 'patient' como valor por defecto
+      //
       res.json({
         success: true,
         tipo_perfil: 'patient'
