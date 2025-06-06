@@ -82,11 +82,7 @@ flutter:
     - assets/images/Personal.png
     - assets/images/Cloud.png
     - assets/images/Folder Up.png
-    - assets/signals/16265.hea
-    - assets/signals/16265.dat
-    - assets/signals/103003_ECG.hea
-    - assets/signals/103003_ECG.dat
-    - assets/signals/Holo_Sys_Mur.mp3
+
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
